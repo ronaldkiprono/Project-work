@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Snake Game</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+    <main class="game-container">
+        <h1>Snake Game</h1>
+
+        <p class="instructions">
+            Use the arrow keys or the buttons below to move.
+        </p>
+
+        <div class="score-board">
+            Score: <span id="score">0</span>
+        </div>
+
+        <canvas id="gameCanvas" width="600" height="600"></canvas>
+
+        <div class="controls">
+            <button onclick="changeDirection('UP')">↑</button>
+
+            <div>
+                <button onclick="changeDirection('LEFT')">←</button>
+                <button onclick="changeDirection('DOWN')">↓</button>
+                <button onclick="changeDirection('RIGHT')">→</button>
+            </div>
+        </div>
+
+        <button id="restartButton">Restart Game</button>
+
+        <p id="message"></p>
+    </main>
+
+    <script src="{{ url_for('static', filename='game.js') }}"></script>
+
+</body>
+</html>
