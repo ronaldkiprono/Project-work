@@ -6,7 +6,7 @@ const message = document.getElementById("message");
 const restartButton = document.getElementById("restartButton");
 const playButton = document.getElementById("playButton");
 const startMenu = document.getElementById("startMenu");
-
+const difficultyButtons = document.getElementsByName("difficulty");
 const boxSize = 20;
 const canvasSize = 400;
 
@@ -17,6 +17,7 @@ let nextDirection;
 let score;
 let gameRunning;
 let gameLoop;
+let gameSpeed = 120;
 let paused= false;
 
 
@@ -40,7 +41,7 @@ function startGame() {
     message.textContent = "Use the arrow keys to controll the snake";
 
     clearInterval(gameLoop);
-    gameLoop = setInterval(updateGame, 120);
+    gameLoop = setInterval(updateGame, gameSpeed);
 }
 
 
@@ -222,7 +223,24 @@ document.addEventListener("keydown", function(event) {
 
 
 restartButton.addEventListener("click", startGame);
+
 playButton.addEventListener("click", function () {
+  difficultyButtons.forEach((button) => {
+    if (button.checked) {
+      if (button.value === "easy") {
+        gameSpeed = 180;
+      }
+
+      if (button.value === "medium") {
+        gameSpeed = 120;
+      }
+
+      if (button.value === "hard") {
+        gameSpeed = 70;
+      }
+    }
+  });
+
   startMenu.style.display = "none";
   startGame();
 });
