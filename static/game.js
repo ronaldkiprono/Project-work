@@ -21,6 +21,7 @@ let gameLoop;
 let gameSpeed = 120;
 let paused= false;
 let highScore = Number(localStorage.getItem("highScore")) || 0;
+let specialFoodTimer = null;
 
 highScoreText.textContent = highScore;
 
@@ -73,6 +74,21 @@ function createFood() {
   } else {
     foodPosition.type = "poison";
     foodPosition.color = "#a855f7";
+  }
+  // Stop any previous timer
+  clearTimeout(specialFoodTimer);
+
+  // Start a timer for special foods
+  if (foodPosition.type === "gold" || foodPosition.type === "poison") {
+    specialFoodTimer = setTimeout(function () {
+      // Only replace the food if it hasn't been eaten yet
+      if (food && (food.type === "gold" || food.type === "poison")) {
+        food = createFood();
+
+        // Redraw immediately so the new food appears
+        drawGame();
+      }
+    }, 5000);
   }
 
   return foodPosition;
@@ -135,6 +151,7 @@ function updateGame() {
 
        highScoreText.textContent = highScore;
      }
+     clearTimeout(specialFoodTimer);
      food = createFood();
    } else {
      snake.pop();
