@@ -6,7 +6,7 @@ const message = document.getElementById("message");
 const restartButton = document.getElementById("restartButton");
 
 const boxSize = 20;
-const canvasSize = 600;
+const canvasSize = 400;
 
 let snake;
 let food;
@@ -45,8 +45,8 @@ function createFood() {
 
     do {
         foodPosition = {
-            x: Math.floor(Math.random() * 30) * boxSize,
-            y: Math.floor(Math.random() * 30) * boxSize
+            x: Math.floor(Math.random() * 20) * boxSize,
+            y: Math.floor(Math.random() * 20) * boxSize
         };
     } while (
         snake.some(part => part.x === foodPosition.x && part.y === foodPosition.y)
