@@ -4,6 +4,7 @@ const ctx = canvas.getContext("2d");
 const scoreText = document.getElementById("score");
 const message = document.getElementById("message");
 const restartButton = document.getElementById("restartButton");
+const playButton = document.getElementById("playButton");
 
 const boxSize = 20;
 const canvasSize = 400;
@@ -35,7 +36,7 @@ function startGame() {
 
     gameRunning = true;
     paused = false;
-    message.textContent = "";
+    message.textContent = "Use the arrow keys to controll the snake";
 
     clearInterval(gameLoop);
     gameLoop = setInterval(updateGame, 120);
@@ -220,6 +221,9 @@ document.addEventListener("keydown", function(event) {
 
 
 restartButton.addEventListener("click", startGame);
+playButton.addEventListener("click", function () {
+  playButton.style.display = "none";
+  startGame();
+});
 
 
-startGame();
