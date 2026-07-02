@@ -26,7 +26,39 @@
         <div class="canvas-container">
             <canvas id="gameCanvas" width="400" height="400"></canvas>
 
+            <div id="startMenu">
+
+            <h2>🐍 Snake Game</h2>
+
             <button id="playButton">▶ Play Game</button>
+
+            <div class="difficulty">
+
+                <p>Select Difficulty</p>
+
+                <label>
+                   <input type="radio" name="difficulty" value="easy">
+                   Easy
+                </label>
+
+                 <label>
+                     <input type="radio"
+                            name="difficulty"
+                            value="medium"
+                            checked>
+                     Medium
+                 </label>
+
+                 <label>
+                     <input type="radio"
+                            name="difficulty"
+                            value="hard">
+                     Hard
+                 </label>
+
+            </div>
+
+        </div>
         </div>
         <div class="controls">
             <button onclick="changeDirection('UP')">↑</button>

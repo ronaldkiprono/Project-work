@@ -5,6 +5,7 @@ const scoreText = document.getElementById("score");
 const message = document.getElementById("message");
 const restartButton = document.getElementById("restartButton");
 const playButton = document.getElementById("playButton");
+const startMenu = document.getElementById("startMenu");
 
 const boxSize = 20;
 const canvasSize = 400;
@@ -222,7 +223,7 @@ document.addEventListener("keydown", function(event) {
 
 restartButton.addEventListener("click", startGame);
 playButton.addEventListener("click", function () {
-  playButton.style.display = "none";
+  startMenu.style.display = "none";
   startGame();
 });
 

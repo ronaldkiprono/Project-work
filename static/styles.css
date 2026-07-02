@@ -59,46 +59,72 @@ canvas {
     font-size: 20px;
     color: #facc15;
 }
-#playButton {
-    margin: 15px;
-    padding: 12px 28px;
-    font-size: 22px;
-    background-color: #22c55e;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
 
-#playButton:hover {
-    background-color: #16a34a;
-}
+
 .canvas-container {
     position: relative;
     display: inline-block;
 }
 
-#playButton {
-    position: absolute;
 
+
+#startMenu {
+    position: absolute;
     top: 50%;
     left: 50%;
-
     transform: translate(-50%, -50%);
 
-    padding: 15px 35px;
-    font-size: 24px;
+    width: 280px;
 
-    background: #22c55e;
+    background: rgba(17, 24, 39, 0.95);
+    border: 2px solid #22c55e;
+    border-radius: 15px;
+
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
     color: white;
+    z-index: 20;
+}
 
+#startMenu h2 {
+    margin: 0;
+    color: #22c55e;
+}
+
+.difficulty {
+    width: 100%;
+    text-align: left;
+}
+
+.difficulty p {
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
+
+.difficulty label {
+    display: block;
+    margin: 8px 0;
+}
+
+
+
+
+#playButton {
+    padding: 12px 28px;
+    font-size: 22px;
+    background-color: #22c55e;
+    color: white;
     border: none;
     border-radius: 10px;
-
     cursor: pointer;
-    z-index: 10;
+    width: 180px;
 }
 
 #playButton:hover {
-    background: #16a34a;
+    background-color: #16a34a;
 }
