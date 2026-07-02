@@ -9,6 +9,7 @@ const startMenu = document.getElementById("startMenu");
 const difficultyButtons = document.getElementsByName("difficulty");
 const boxSize = 20;
 const canvasSize = 400;
+const highScoreText = document.getElementById("highScore");
 
 let snake;
 let food;
@@ -19,6 +20,9 @@ let gameRunning;
 let gameLoop;
 let gameSpeed = 120;
 let paused= false;
+let highScore = Number(localStorage.getItem("highScore")) || 0;
+
+highScoreText.textContent = highScore;
 
 
 function startGame() {
@@ -124,6 +128,13 @@ function updateGame() {
      }
 
      scoreText.textContent = score;
+     if (score > highScore) {
+       highScore = score;
+
+       localStorage.setItem("highScore", highScore);
+
+       highScoreText.textContent = highScore;
+     }
      food = createFood();
    } else {
      snake.pop();
