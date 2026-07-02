@@ -57,6 +57,7 @@ function createFood() {
     foodPosition = {
       x: Math.floor(Math.random() * 20) * boxSize,
       y: Math.floor(Math.random() * 20) * boxSize,
+      spawnedAt: Date.now(),
     };
   } while (
     snake.some((part) => part.x === foodPosition.x && part.y === foodPosition.y)
@@ -185,6 +186,14 @@ function drawGame() {
   // Draw background
   ctx.fillStyle = "#020617";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  let flash = false;
+
+  if (
+    (food.type === "gold" || food.type === "poison") &&
+    Date.now() - food.spawnedAt > 4000
+  ) {
+    flash = Math.floor(Date.now() / 200) % 2 === 0;
+  }
 
   // Draw food
   // ---------- Draw Food ----------
@@ -209,17 +218,19 @@ function drawGame() {
     ctx.ellipse(food.x + 14, food.y + 3, 3, 2, Math.PI / 4, 0, Math.PI * 2);
     ctx.fill();
   } else if (food.type === "gold") {
-    // Gold star
-    ctx.fillStyle = "#FFD700";
-    ctx.font = "20px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("⭐", food.x + 10, food.y + 17);
+    if (!flash) {
+      ctx.fillStyle = "#FFD700";
+      ctx.font = "20px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("⭐", food.x + 10, food.y + 17);
+    }
   } else if (food.type === "poison") {
-    // Poison skull
-    ctx.font = "20px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("☠️", food.x + 10, food.y + 17);
-  }
+    if (!flash) {
+      ctx.font = "20px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("☠️", food.x + 10, food.y + 17);
+    }
+}
 
   // Draw snake
   snake.forEach((part, index) => {
