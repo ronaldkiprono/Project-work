@@ -195,13 +195,69 @@ function drawGame() {
 
   // Draw snake
   snake.forEach((part, index) => {
+    // Head
     if (index === 0) {
       ctx.fillStyle = "#86efac";
     } else {
       ctx.fillStyle = "#22c55e";
     }
 
-    ctx.fillRect(part.x, part.y, boxSize, boxSize);
+    // Rounded body
+    ctx.beginPath();
+    ctx.roundRect(part.x + 1, part.y + 1, boxSize - 2, boxSize - 2, 6);
+    ctx.fill();
+
+    // Draw eyes ONLY on the head
+    if (index === 0) {
+      let eyes = [];
+
+      switch (direction) {
+        case "RIGHT":
+          eyes = [
+            { x: part.x + 14, y: part.y + 6 },
+            { x: part.x + 14, y: part.y + 14 },
+          ];
+          break;
+
+        case "LEFT":
+          eyes = [
+            { x: part.x + 6, y: part.y + 6 },
+            { x: part.x + 6, y: part.y + 14 },
+          ];
+          break;
+
+        case "UP":
+          eyes = [
+            { x: part.x + 6, y: part.y + 6 },
+            { x: part.x + 14, y: part.y + 6 },
+          ];
+          break;
+
+        case "DOWN":
+          eyes = [
+            { x: part.x + 6, y: part.y + 14 },
+            { x: part.x + 14, y: part.y + 14 },
+          ];
+          break;
+      }
+
+      // White eyeballs
+      ctx.fillStyle = "white";
+
+      eyes.forEach((eye) => {
+        ctx.beginPath();
+        ctx.arc(eye.x, eye.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Black pupil
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(eye.x, eye.y, 1.3, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "white";
+      });
+    }
   });
 
   // Draw pause overlay
