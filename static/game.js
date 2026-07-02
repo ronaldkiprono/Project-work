@@ -46,18 +46,32 @@ function startGame() {
 
 
 function createFood() {
-    let foodPosition;
+  let foodPosition;
 
-    do {
-        foodPosition = {
-            x: Math.floor(Math.random() * 20) * boxSize,
-            y: Math.floor(Math.random() * 20) * boxSize
-        };
-    } while (
-        snake.some(part => part.x === foodPosition.x && part.y === foodPosition.y)
-    );
+  do {
+    foodPosition = {
+      x: Math.floor(Math.random() * 20) * boxSize,
+      y: Math.floor(Math.random() * 20) * boxSize,
+    };
+  } while (
+    snake.some((part) => part.x === foodPosition.x && part.y === foodPosition.y)
+  );
 
-    return foodPosition;
+  // Decide which food appears
+  const random = Math.random();
+
+  if (random < 0.75) {
+    foodPosition.type = "normal";
+    foodPosition.color = "#ef4444";
+  } else if (random < 0.9) {
+    foodPosition.type = "gold";
+    foodPosition.color = "#FFD700";
+  } else {
+    foodPosition.type = "poison";
+    foodPosition.color = "#a855f7";
+  }
+
+  return foodPosition;
 }
 
 
@@ -93,13 +107,27 @@ function updateGame() {
 
     snake.unshift(head);
 
-    if (head.x === food.x && head.y === food.y) {
-        score++;
-        scoreText.textContent = score;
-        food = createFood();
-    } else {
-        snake.pop();
-    }
+   if (head.x === food.x && head.y === food.y) {
+     if (food.type === "normal") {
+       score += 1;
+     } else if (food.type === "gold") {
+       score += 5;
+
+       // Grow one extra segment
+       snake.push({ ...snake[snake.length - 1] });
+     } else if (food.type === "poison") {
+       score = Math.max(0, score - 1);
+
+       if (snake.length > 3) {
+         snake.pop();
+       }
+     }
+
+     scoreText.textContent = score;
+     food = createFood();
+   } else {
+     snake.pop();
+   }
 
     drawGame();
 }
@@ -131,8 +159,39 @@ function drawGame() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Draw food
-  ctx.fillStyle = "#ef4444";
-  ctx.fillRect(food.x, food.y, boxSize, boxSize);
+  // ---------- Draw Food ----------
+
+  if (food.type === "normal") {
+    // Apple
+    ctx.fillStyle = "#ef4444";
+    ctx.beginPath();
+    ctx.arc(food.x + 10, food.y + 10, 8, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Stem
+    ctx.strokeStyle = "#5b3a29";
+    ctx.beginPath();
+    ctx.moveTo(food.x + 10, food.y + 4);
+    ctx.lineTo(food.x + 10, food.y);
+    ctx.stroke();
+
+    // Leaf
+    ctx.fillStyle = "#22c55e";
+    ctx.beginPath();
+    ctx.ellipse(food.x + 14, food.y + 3, 3, 2, Math.PI / 4, 0, Math.PI * 2);
+    ctx.fill();
+  } else if (food.type === "gold") {
+    // Gold star
+    ctx.fillStyle = "#FFD700";
+    ctx.font = "20px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("⭐", food.x + 10, food.y + 17);
+  } else if (food.type === "poison") {
+    // Poison skull
+    ctx.font = "20px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("☠️", food.x + 10, food.y + 17);
+  }
 
   // Draw snake
   snake.forEach((part, index) => {
