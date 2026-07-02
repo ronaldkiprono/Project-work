@@ -15,6 +15,7 @@ let nextDirection;
 let score;
 let gameRunning;
 let gameLoop;
+let paused= false;
 
 
 function startGame() {
@@ -33,6 +34,7 @@ function startGame() {
     scoreText.textContent = score;
 
     gameRunning = true;
+    paused = false;
     message.textContent = "";
 
     clearInterval(gameLoop);
@@ -57,6 +59,10 @@ function createFood() {
 
 
 function updateGame() {
+    if (paused) {
+      return;
+    }
+
     direction = nextDirection;
 
     const head = { ...snake[0] };
@@ -117,21 +123,41 @@ function checkCollision(head) {
 
 
 function drawGame() {
-    ctx.fillStyle = "#020617";
+  // Draw background
+  ctx.fillStyle = "#020617";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Draw food
+  ctx.fillStyle = "#ef4444";
+  ctx.fillRect(food.x, food.y, boxSize, boxSize);
+
+  // Draw snake
+  snake.forEach((part, index) => {
+    if (index === 0) {
+      ctx.fillStyle = "#86efac";
+    } else {
+      ctx.fillStyle = "#22c55e";
+    }
+
+    ctx.fillRect(part.x, part.y, boxSize, boxSize);
+  });
+
+  // Draw pause overlay
+  if (paused) {
+    // Dark transparent overlay
+    ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = "#ef4444";
-    ctx.fillRect(food.x, food.y, boxSize, boxSize);
+    // Pause text
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 40px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("GAME PAUSED", canvas.width / 2, canvas.height / 2);
 
-    snake.forEach((part, index) => {
-        if (index === 0) {
-            ctx.fillStyle = "#86efac";
-        } else {
-            ctx.fillStyle = "#22c55e";
-        }
-
-        ctx.fillRect(part.x, part.y, boxSize, boxSize);
-    });
+    // Small instruction
+    ctx.font = "20px Arial";
+    ctx.fillText("Press P to Resume", canvas.width / 2, canvas.height / 2 + 40);
+  }
 }
 
 
@@ -156,6 +182,20 @@ function endGame() {
     message.textContent = "Game Over! Your score was " + score;
 }
 
+function togglePause() {
+  if (!gameRunning) {
+    return;
+  }
+
+  paused = !paused;
+
+  if (paused) {
+    drawGame();
+  } else {
+    message.textContent = "";
+  }
+}
+
 
 document.addEventListener("keydown", function(event) {
     if (event.key === "ArrowUp") {
@@ -172,6 +212,9 @@ document.addEventListener("keydown", function(event) {
 
     if (event.key === "ArrowRight") {
         changeDirection("RIGHT");
+    }
+    if (event.key === "p" || event.key === "P") {
+      togglePause();
     }
 });
 
